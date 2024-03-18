@@ -200,7 +200,8 @@ pub fn execute_convert(
         MINT_REPLY,
     );
 
-    // remove token_info
+    TOKEN_INFO.remove(deps.storage, &token_id.as_bytes());
+
     Ok(Response::new()
         .add_attribute("action","convert")
         .add_submessages(vec![submsg_burn, submsg_mint]))
