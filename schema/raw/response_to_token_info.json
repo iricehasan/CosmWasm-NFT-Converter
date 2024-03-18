@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TokenInfoResponse",
+  "type": "object",
+  "required": [
+    "nft_addr",
+    "sender",
+    "token_id"
+  ],
+  "properties": {
+    "nft_addr": {
+      "type": "string"
+    },
+    "sender": {
+      "type": "string"
+    },
+    "token_id": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

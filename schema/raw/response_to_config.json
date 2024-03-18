@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ConfigResponse",
+  "type": "object",
+  "required": [
+    "nft_addr"
+  ],
+  "properties": {
+    "nft_addr": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

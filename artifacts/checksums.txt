@@ -1,0 +1,2 @@
+cdc664de9e60ed7b7d084d0d803207c55d27d9ce350a690228f5c1d1faf0f043  cw721_metadata_onchain.wasm
+fc9eb2f9e59ec2a9ace2cbe9c5686206930ab4274196e29763cad25df5ac5aa1  nft_converter.wasm
