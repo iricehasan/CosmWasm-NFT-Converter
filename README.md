@@ -42,13 +42,6 @@ pub enum ExecuteMsg {
 }
 
 #[cw_serde]
-pub enum InnerMsg {
-    Succeed,
-    Fail,
-}
-// ExecuteMsg::ReceiveNft(msg) => try_receive_nft(env, deps, info, msg)
-
-#[cw_serde]
 #[derive(QueryResponses)]
 pub enum QueryMsg {
     #[returns(OperationsResponse)]

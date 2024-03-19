@@ -3,14 +3,14 @@ use std::vec;
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{
-    from_json, to_json_binary, wasm_instantiate, Addr, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Reply, Response, StdResult, SubMsg, Uint128, WasmMsg
+    to_json_binary, wasm_instantiate, Addr, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Reply, Response, StdResult, SubMsg, Uint128, WasmMsg
 };
 use cw721::{ApprovalResponse, Cw721ExecuteMsg, Cw721QueryMsg, Cw721ReceiveMsg};
 use cw721_base::InstantiateMsg as Cw721InstantaiteMsg;
 
 use cw_utils::parse_reply_instantiate_data;
 use crate::error::ContractError;
-use crate::msg::{ExecuteMsg, InnerMsg, InstantiateMsg, QueryMsg, OperationsResponse, ConfigResponse, TokenInfoResponse, Metadata};
+use crate::msg::{ExecuteMsg, InstantiateMsg, QueryMsg, OperationsResponse, ConfigResponse, TokenInfoResponse, Metadata};
 use crate::state::{Config, CONFIG, TokenInfo, TOKEN_INFO, OPERATIONS};
 
 pub const INSTANTIATE_REPLY: u64 = 1;
@@ -119,9 +119,6 @@ pub fn execute_receive(
     let sender = receive_msg.sender.clone();
     let nft_addr = info.sender.clone().to_string();
 
-    
-    let inner_msg: InnerMsg = from_json(&receive_msg.msg)?;
-
     // ensure contract have approval
     let _: ApprovalResponse = deps
         .querier
@@ -135,34 +132,30 @@ pub fn execute_receive(
         )
         .unwrap();
 
-    match inner_msg {
-        InnerMsg::Succeed => {
-            let new_nft_info = TokenInfo {
-                token_id: receive_msg.token_id.clone(),
-                nft_addr,
-                sender,
-            };
-        
-            TOKEN_INFO.save(deps.storage, &receive_msg.token_id.clone().as_bytes(), &new_nft_info)?;
+    let new_nft_info = TokenInfo {
+        token_id: receive_msg.token_id.clone(),
+        nft_addr,
+        sender,
+    };
+    
+    TOKEN_INFO.save(deps.storage, &receive_msg.token_id.clone().as_bytes(), &new_nft_info)?;
 
-            Ok(Response::new()
-                .add_attributes([
-                    ("action", "receive_nft"),
-                    ("token_id", receive_msg.token_id.as_str()),
-                    ("sender", receive_msg.sender.as_str()),
-                    ("msg", receive_msg.msg.to_base64().as_str()),
-                ])
-                .set_data(
-                    [
-                        receive_msg.token_id,
-                        receive_msg.sender,
-                        receive_msg.msg.to_base64(),
-                    ]
-                    .concat()
-                    .as_bytes(),
-                ))},
-        InnerMsg::Fail => Err(ContractError::Failed {}),
-    }
+    Ok(Response::new()
+    .add_attributes([
+        ("action", "receive_nft"),
+        ("token_id", receive_msg.token_id.as_str()),
+        ("sender", receive_msg.sender.as_str()),
+        ("msg", receive_msg.msg.to_base64().as_str()),
+    ])
+    .set_data(
+        [
+            receive_msg.token_id,
+            receive_msg.sender,
+            receive_msg.msg.to_base64(),
+        ]
+        .concat()
+        .as_bytes(),
+    ))
 }
 
 pub fn execute_convert(

@@ -59,8 +59,8 @@ const metadata = {
 
 // use converter contractAddress to mint since it is the admin (minter)
 const mintResult = await client.execute(senderAddress, contractAddress, {mint: {token_id: tokenId, extension: metadata, recipient: senderAddress}}, "auto")
-// msg "InN1Y2NlZWQi" is the Base64 encoded msg of "succeed"
-const sendNft = client.execute(senderAddress, nftcontractAddress, {send_nft: {contract: contractAddress, msg: "InN1Y2NlZWQi" , token_id: tokenId}}, "auto" );
+
+const sendNft = client.execute(senderAddress, nftcontractAddress, {send_nft: {contract: contractAddress, msg: "" , token_id: tokenId}}, "auto" );
 
 // confirm Converter contract has the ownership of the Nft after send
 const TokensResponse = await client.queryContractSmart(nftcontractAddress, { tokens: { owner: contractAddress }});
