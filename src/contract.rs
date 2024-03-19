@@ -168,13 +168,18 @@ pub fn execute_receive(
 pub fn execute_convert(
     deps: DepsMut,
     _env: Env,
-    _info: MessageInfo,
+    info: MessageInfo,
     token_id: String,
     extension: Option<Metadata>,
     token_uri: Option<String>,
 ) -> Result<Response, ContractError> {
     let config = CONFIG.load(deps.storage)?;
     let token_info = TOKEN_INFO.load(deps.storage, &token_id.clone().as_bytes())?;
+
+    // only the owner of the OLD NFT can convert
+    if info.sender != token_info.sender {
+        return Err(ContractError::Unauthorized { })
+    }
 
     let submsg_burn = SubMsg::reply_on_success(
         WasmMsg::Execute {

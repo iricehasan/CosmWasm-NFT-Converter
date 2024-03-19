@@ -42,11 +42,11 @@ const instantiateMsg = { "cw721_code_id": nftCodeId,"name": "Token", "symbol": "
 const instantiateResponse = await client.instantiate(senderAddress, codeId, instantiateMsg, "NFT Converter", "auto")
 console.log(instantiateResponse)
 
-const contractAddress = instantiateResponse.contractAddress 
+const contractAddress = instantiateResponse.contractAddress // "neutron10y79hdq9mf74kgckduhe5nfvrhka49ftgutmny25htykkrxapyss9khgzs"
 const queryNftAddress = client.queryContractSmart(contractAddress, {config: {}})
 console.log(queryNftAddress)
 // const contracts = await client.getContracts(nftCodeId2)
-const nftcontractAddress = "neutron1u5gelyh4uhezzazphcvnuvhf7p4p80z7hs7kcv0hxhcpuyuh4shqlukdew";
+const nftcontractAddress = "neutron19rjgxw9ukccnets88few3df93jm2m7tqxv86k36l2668p9m7unns0mf6z5";
 
 // Define the token ID and owner
 const tokenId = "send_try"; 
