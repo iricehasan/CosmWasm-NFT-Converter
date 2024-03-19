@@ -2,7 +2,6 @@ use cosmwasm_schema::{cw_serde, QueryResponses};
 use cosmwasm_std::Uint128;
 use cw721::Cw721ReceiveMsg;
 
-
 #[cw_serde]
 pub struct Trait {
     pub display_type: Option<String>,
