@@ -3,7 +3,7 @@ use std::vec;
 #[cfg(not(feature = "library"))]
 use cosmwasm_std::entry_point;
 use cosmwasm_std::{
-    to_json_binary, wasm_instantiate, Addr, Binary, Deps, DepsMut, Empty, Env, MessageInfo, Reply, Response, StdResult, SubMsg, Uint128, WasmMsg
+    to_json_binary, wasm_instantiate, Addr, Binary, Deps, DepsMut, Empty, Event, Env, MessageInfo, Reply, Response, StdResult, SubMsg, Uint128, WasmMsg
 };
 use cw721::{ApprovalResponse, Cw721ExecuteMsg, Cw721QueryMsg, Cw721ReceiveMsg};
 use cw721_base::InstantiateMsg as Cw721InstantaiteMsg;
@@ -140,21 +140,10 @@ pub fn execute_receive(
     
     TOKEN_INFO.save(deps.storage, &receive_msg.token_id.clone().as_bytes(), &new_nft_info)?;
 
-    Ok(Response::new()
-    .add_attributes([
-        ("action", "receive_nft"),
-        ("token_id", receive_msg.token_id.as_str()),
-        ("sender", receive_msg.sender.as_str()),
-        ("msg", receive_msg.msg.to_base64().as_str()),
-    ])
-    .set_data(
-        [
-            receive_msg.token_id,
-            receive_msg.sender,
-            receive_msg.msg.to_base64(),
-        ]
-        .concat()
-        .as_bytes(),
+    Ok(Response::new().add_event(Event::new("NFT-sent")
+        .add_attribute("action", "receive_nft")
+        .add_attribute("token_id", receive_msg.token_id.to_string())
+        .add_attribute("sender", receive_msg.sender)
     ))
 }
 
